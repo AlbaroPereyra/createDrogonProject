@@ -146,8 +146,8 @@ EOF)"
   if ! sudo -s eval "$sudoCommands" 2>/dev/null;
      then
      repoDir="${HOME}/${repoDir}";
-     mkdir -p "$repoDir";
   fi
+  mkdir -p "$repoDir";
 fi
 
 licenseFile="${repoDir}/license.txt";
