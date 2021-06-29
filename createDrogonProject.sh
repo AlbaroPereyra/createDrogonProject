@@ -15,6 +15,8 @@ user=$(whoami);
 
 # Disclaimer
 printf "WARNING:"
+printf "Do not use this script it is currently under development\n";
+exit 1;
 printf "This software is in beta, subject to change and prone to errors.\n";
 
 # Get arguments:
