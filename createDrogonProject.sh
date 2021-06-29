@@ -2,16 +2,17 @@
 
 # Variables
 # Get script directory used to locate templates
-dir=$(dirname $0);
+dir="$(dirname $0)";
 script="$dir/$(basename $0)";
-exeName=$(expr $script : '.*/\(.*\)\..*');
-todaysDate=$(date +%m%d%Y);
-username=$(id -F);
-year=$(date +%Y);
-private=false;
-public=true;
+exeName="$(expr $script : '.*/\(.*\)\..*')";
+todaysDate="$(date +%m%d%Y)";
+# TODO help user update this information
+username="$(id -F)";
+year="$(date +%Y)";
+private="false";
+public="true";
 force=false;
-user=$(whoami);
+user="$(whoami)";
 
 # Disclaimer
 printf "WARNING:"
@@ -120,9 +121,13 @@ do
   then
     brew install $dep;
     case $dep in
+      # TODO add git to case
+      # prompt user for global git defults
+      # including renaming master now to main
+      # Also maybe walk user though github ssh setup
       gh)
-	gh auth login;
-	;;
+      gh auth login;
+      ;;
     esac
   fi
 done
@@ -159,6 +164,7 @@ case $license in
     printf "ex. This software is used to create software.\n";
     read programDescription
     printf "%s,%s\n" "$programNmae" "programDescription"> "$licenseFile";
+    # This line is ugly, but it works, alternatively we can evaluate and write line by line.
     eval "echo \"$(< templates/licenses/GPL2.txt)\"" >> "$licenseFile";
     ;;
   gpl3)
@@ -179,13 +185,14 @@ case $license in
       printf "Aren't we all...\n";
       username="FSF";
     fi
+    # This line is ugly, but it works, alternatively we can evaluate and write line by line.
     eval "echo \"$(< templates/licenses/GPL3.txt)\"" >> "$licenseFile";
     ;;
   *)
     if [ !$force ];
     then
       printf "Would you like your software software to be licensed\n";
-      printf "under the BSD license.\n"
+      printf "under the BSD license? (press y for yes or n for no.)\n"
       old_stty_cfg=$(stty -g)
       stty raw -echo
       bsdLicense=$( while ! head -c 1 | grep -i '[ny]' ;do true ;done )
@@ -211,4 +218,5 @@ git --git-dir="${gitDir}" --work-tree="${repoDir}" init;
 git --git-dir="${gitDir}" --work-tree="${repoDir}" add "${repoDir}";
 git --git-dir="${gitDir}" --work-tree="${repoDir}" commit -m "Initial commit ${todaysDate}";
 (cd $repoDir; gh repo create --confirm --enable-issues=true --enable-wiki=false --private="$private" --public="$public" "$softwareName";)
+# TODO get master value it is not always mast now.
 git --git-dir="${gitDir}" --work-tree="${repoDir}" push --set-upstream origin master;
