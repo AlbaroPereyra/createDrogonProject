@@ -56,9 +56,9 @@ do
       # user.email=2AlbaroPereyra@gmail.com
       # set the default conflict resolution.
       git config pull.rebase false;
-      # including renaming master now to main
-      # defaultBranch=main
-      #git config --global init.defaultBranch $defaultBranch
+      # set default branch to main since git now complains if it is master.
+      defaultBranch=main
+      git config --global init.defaultBranch $defaultBranch
       # Also maybe walk user though github ssh setup
       ;;
       gh)
