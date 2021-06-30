@@ -52,14 +52,15 @@ do
     case $dep in
       git)
       # prompt user for global git defults
-      # user.name=Albaro Pereyra
-      # user.email=2AlbaroPereyra@gmail.com
+      # git config --global user.name "FIRST_NAME LAST_NAME"
+      # git config --global user.email "MY_NAME@example.com"
       # set the default conflict resolution.
       git config pull.rebase false;
       # set default branch to main since git now complains if it is master.
       defaultBranch=main
       git config --global init.defaultBranch $defaultBranch
-      # Also maybe walk user though github ssh setup
+      # TODO 
+      # walk user through github ssh setup
       ;;
       gh)
 	gh auth login;
