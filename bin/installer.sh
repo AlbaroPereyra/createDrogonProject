@@ -33,13 +33,13 @@ OLDIFS=$IFS;
 IFS=$'\n';
 for dep in ${deps};
 do
+  isDepInstalled=$(brew ls --versions $dep);
   # TODO
   # determine gcc version is greater than 5.4.0
   # determine cmake version is greater than 3.5
   # there seems to be a problem with boost Drogon
   # is unable to detect it is installed.
   # 
-  isDepInstalled=$(brew ls --versions $dep);
   if [ -z "${isDepInstalled}" ];
   then
     case $dep in
