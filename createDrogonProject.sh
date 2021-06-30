@@ -36,7 +36,9 @@ while getopts :fhl:n:p OPT; do
       ;;
     h|+h)
       cat <<EOF
-Use this script to create a new project.
+Use this script to create a new Drogon project.
+You can learn more about Drogon here:
+https://drogon.docsforge.com/master/overview/
 
 -f
     Use this option to force the default license which is:
@@ -110,24 +112,61 @@ deps="$(
 tee <<EOF
 git
 gh
+gcc
+cmake
+jsoncpp
+util-linux
+zlib
+openssl@1.1
+c-ares
+boost
+sqlite
+mariadb
 EOF)"
 
 OLDIFS=$IFS;
 IFS=$'\n';
 for dep in ${deps};
 do
+  # TODO
+  # determine gcc version is greater than 5.4.0
+  # determine cmake version is greater than 3.5
+  # 
   isDepInstalled=$(brew ls --versions $dep);
   if [ -z "${isDepInstalled}" ];
   then
+    case $dep in
+       mariadb)
+	 brew unlink mysql
+	;;
+    esac
     brew install $dep;
     case $dep in
       # TODO add git to case
       # prompt user for global git defults
+      # user.name=Albaro Pereyra
+      # user.email=2AlbaroPereyra@gmail.com
       # including renaming master now to main
+      # defaultBranch=main
+      #git config --global init.defaultBranch $defaultBranch
       # Also maybe walk user though github ssh setup
       gh)
-      gh auth login;
-      ;;
+	gh auth login;
+	;;
+      util-linux)
+	# TDOO
+	# Notes::
+	# util-linux is a keg-only package and will not be symlinked to
+	# /usr/local. Hence you will have to specify the following path
+	# when prompted for uuid installation directory
+	# /usr/local/opt/util-linux
+	printf "/usr/local/opt/util-linux" | pecl install uuid
+	;;
+      zlib)
+	export LDFLAGS="-L/usr/local/opt/zlib/lib";
+	export CPPFLAGS="-I/usr/local/opt/zlib/include";
+	export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig";
+	;;
     esac
   fi
 done
@@ -214,9 +253,18 @@ cp $dir/templates/git/gitIgnore.txt "$repoDir"/.gitignore;
 # Create repo in Github
 gitDir="${repoDir}/.git/";
 mkdir -p ${gitDir};
+cd $repoDir;
+gh repo create --confirm --enable-issues=true --enable-wiki=false --private="$private" --public="$public" "$softwareName";
 git --git-dir="${gitDir}" --work-tree="${repoDir}" init;
-git --git-dir="${gitDir}" --work-tree="${repoDir}" add "${repoDir}";
+git --git-dir="${gitDir}" --work-tree="${repoDir}" add -A "${repoDir}";
 git --git-dir="${gitDir}" --work-tree="${repoDir}" commit -m "Initial commit ${todaysDate}";
-(cd $repoDir; gh repo create --confirm --enable-issues=true --enable-wiki=false --private="$private" --public="$public" "$softwareName";)
-# TODO get master value it is not always mast now.
-git --git-dir="${gitDir}" --work-tree="${repoDir}" push --set-upstream origin master;
+defaultBranch="$(git config --global --get init.defaultBranch)";
+git --git-dir="${gitDir}" --work-tree="${repoDir}" push --set-upstream origin "$defaultBranch";
+
+# git clone https://github.com/an-tao/drogon
+# cd drogon
+# git submodule update --init
+# mkdir build
+# cd build
+# cmake -DCMAKE_BUILD_TYPE=Release..
+# make && sudo make install
