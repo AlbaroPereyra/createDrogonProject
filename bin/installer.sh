@@ -42,23 +42,25 @@ do
   # 
   if [ -z "${isDepInstalled}" ];
   then
+    # Used for dep prerequisites
     case $dep in
        mariadb)
-	 brew unlink mysql
-	;;
+       brew unlink mysql
+       ;;
     esac
     brew install $dep;
     case $dep in
-      # TODO add git to case
+      git)
       # prompt user for global git defults
       # user.name=Albaro Pereyra
       # user.email=2AlbaroPereyra@gmail.com
       # set the default conflict resolution.
-      git config pull.rebase false
+      git config pull.rebase false;
       # including renaming master now to main
       # defaultBranch=main
       #git config --global init.defaultBranch $defaultBranch
       # Also maybe walk user though github ssh setup
+      ;;
       gh)
 	gh auth login;
 	;;
