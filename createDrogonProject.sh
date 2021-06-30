@@ -98,3 +98,7 @@ drogon_ctl create project $softwareName;
 # This can probably be cleaner with find.
 cp -R "${softwareName}/" "${repoDir}";
 rm -rf "${softwareName}/";
+cd build;
+cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DOPENSSL_LIBRARIES=/usr/local/opt/openssl/lib -DCMAKE_BUILD_TYPE=Release ..;
+make;
+./$softwareName
