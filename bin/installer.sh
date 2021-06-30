@@ -76,6 +76,8 @@ done
 IFS=$OLDIFS;
 
 optDir="/opt":
+# TODO 
+# test this, this might fail if the directory already exists
 if ! mkdir -p "$optDir" 2>/dev/null;
 then
   sudoCommands="$(
