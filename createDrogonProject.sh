@@ -1,13 +1,16 @@
 #! /bin/sh -
 
 # Variables
-# Get script directory used to locate templates
 script="$dir/$(basename $0)";
+dir="$(dirname $0)";
+binDir="$dir/bin";
+installer="installer.sh";
 exeName="$(expr $script : '.*/\(.*\)\..*')";
 todaysDate="$(date +%m%d%Y)";
 private="false";
 public="true";
 user="$(whoami)";
+optDir="/opt";
 
 # Disclaimer
 printf "WARNING:\n";
@@ -63,80 +66,15 @@ done
 shift $(expr $OPTIND - 1)
 OPTIND=1
 
-# -s returns 0 if found otherwise 1
-which -s brew;
+which -s drogon_ctl;
 # $? exit status of previous command
 if [ $? != 0 ];
 then
-  # Install Homebrew
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)";
+  # Install Drogon
+  chmod u+x ${binDir}/${installer};
+  ./${binDir}/${installer}
 fi
-brew update;
-brew upgrade;
 
-deps="$(
-tee <<EOF
-git
-gh
-gcc
-cmake
-jsoncpp
-util-linux
-zlib
-openssl@1.1
-c-ares
-boost
-sqlite
-mariadb
-EOF)"
-
-OLDIFS=$IFS;
-IFS=$'\n';
-for dep in ${deps};
-do
-  # TODO
-  # determine gcc version is greater than 5.4.0
-  # determine cmake version is greater than 3.5
-  # 
-  isDepInstalled=$(brew ls --versions $dep);
-  if [ -z "${isDepInstalled}" ];
-  then
-    case $dep in
-       mariadb)
-	 brew unlink mysql
-	;;
-    esac
-    brew install $dep;
-    case $dep in
-      # TODO add git to case
-      # prompt user for global git defults
-      # user.name=Albaro Pereyra
-      # user.email=2AlbaroPereyra@gmail.com
-      # including renaming master now to main
-      # defaultBranch=main
-      #git config --global init.defaultBranch $defaultBranch
-      # Also maybe walk user though github ssh setup
-      gh)
-	gh auth login;
-	;;
-      util-linux)
-	# TDOO
-	# Notes::
-	# util-linux is a keg-only package and will not be symlinked to
-	# /usr/local. Hence you will have to specify the following path
-	# when prompted for uuid installation directory
-	# /usr/local/opt/util-linux
-	printf "/usr/local/opt/util-linux" | pecl install uuid
-	;;
-      zlib)
-	export LDFLAGS="-L/usr/local/opt/zlib/lib";
-	export CPPFLAGS="-I/usr/local/opt/zlib/include";
-	export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig";
-	;;
-    esac
-  fi
-done
-IFS=$OLDIFS;
 
 if [ -z "$softwareName" ];
 then
@@ -145,35 +83,14 @@ then
   read softwareName;
 fi
 
-repoDir="/opt/${softwareName}"
-if ! mkdir -p "$repoDir" 2>/dev/null;
+if ! touch "$optDir" 2>/dev/null;
 then
-  sudoCommands="$(
-tee <<EOF
-mkdir -p /opt;
-chown -R $user /opt;
-EOF)"
-  if ! sudo -s eval "$sudoCommands" 2>/dev/null;
-     then
-     repoDir="${HOME}/${repoDir}";
-  fi
-  mkdir -p "$repoDir";
+  optDir="${HOME}/${optDir}";
 fi
 
-# Create repo in Github
+# Create repo on Github
 gitDir="${repoDir}/.git/";
-mkdir -p ${gitDir};
-cd $repoDir;
+cd $optDir;
+# TODO test updated gh
 gh repo create --confirm --enable-issues=true --enable-wiki=false --private="$private" --public="$public" "$softwareName";
-git --git-dir="${gitDir}" --work-tree="${repoDir}" init;
-git --git-dir="${gitDir}" --work-tree="${repoDir}" add -A "${repoDir}";
-git --git-dir="${gitDir}" --work-tree="${repoDir}" commit -m "Initial commit ${todaysDate}";
-defaultBranch="$(git config --global --get init.defaultBranch)";
-git --git-dir="${gitDir}" --work-tree="${repoDir}" push --set-upstream origin "$defaultBranch";
-
-git clone https://github.com/an-tao/drogon $repoDir
-git submodule update --init
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release
-make && sudo make install
+cd $gitDir;
