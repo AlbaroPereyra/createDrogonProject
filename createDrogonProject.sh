@@ -2,11 +2,9 @@
 
 # Variables
 # Get script directory used to locate templates
-dir="$(dirname $0)";
 script="$dir/$(basename $0)";
 exeName="$(expr $script : '.*/\(.*\)\..*')";
 todaysDate="$(date +%m%d%Y)";
-# TODO help user update this information
 private="false";
 public="true";
 user="$(whoami)";
