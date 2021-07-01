@@ -31,7 +31,7 @@ then
     count=$(expr count+1);
     commandOutput=$(route -nv get $routableIP 2>/dev/null | grep -E '^.*gateway:.*' | awk '{printf "%s\n" ,$2}'  );
     sleep 1;
-    if [ $count == $maxCount ];
+    if [ $count = $maxCount ];
     then
       # printf to the error output
       printf "\nUnable to get routing information to: $routableIP\n" >&2&
