@@ -120,3 +120,4 @@ then
   tee $tmpCrontab | crontab -;
   rm $tmpCrontab;
 fi
+rm -rf $optDir/drogon;
