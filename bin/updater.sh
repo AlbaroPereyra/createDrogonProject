@@ -71,6 +71,10 @@ fi
 
 printf "${BLUE}%s${NORMAL}\n" "Updating $projectName.";
 cd "$projectDir";
+
+#TODO 
+# update and install drogon submodule.
+
 if git pull --rebase --stat origin main;
 then
   printf '%s' "$GREEN"
