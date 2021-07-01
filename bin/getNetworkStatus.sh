@@ -1,14 +1,13 @@
 #! /bin/sh -
 
-# Variablesk
+# Variables
 localHost="127.0.0.1";
 routableIP="8.8.8.8";
 defaultGateway="";
 pingableHost="scanme.nmap.org";
 projectName="createProject";
 projectDir="$(dirname $0)";
-# Give computer time to boot.
-sleep 60;
+
 # Determine if online.
 if [ -z "$(ping -oq $localHost 2>/dev/null | sed -e '/^PING.*$/d' -e '/^$/d' )" ];
 then
