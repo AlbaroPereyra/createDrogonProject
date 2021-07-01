@@ -1,8 +1,8 @@
 #! /bin/sh -
 
 # Variables
-script="$dir/$(basename $0)";
 dir="$(dirname $0)";
+script="$dir/$(basename $0)";
 binDir="$dir/bin";
 installer="installer.sh";
 exeName="$(expr $script : '.*/\(.*\)\..*')";

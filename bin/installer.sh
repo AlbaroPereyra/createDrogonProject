@@ -1,6 +1,8 @@
+#! /bin/sh -
 # Variables
 user="$(whoami)";
-
+dir="$(dirname $0)";
+chmod -R u+x "$dir";
 # -s returns 0 if found otherwise 1
 which -s brew;
 # $? exit status of previous command
