@@ -91,8 +91,7 @@ fi
 # Create repo on Github
 gitDir="${repoDir}/.git/";
 cd $optDir;
-# TODO test updated gh
-gh repo create --confirm --enable-issues=true --enable-wiki=false --private="$private" --public="$public" "$softwareName";
+gh repo create --confirm --enable-issues=true --enable-wiki=true --private="$private" --public="$public" "$softwareName";
 cd $gitDir;
 drogon_ctl create project $softwareName;
 # This can probably be cleaner with find.
