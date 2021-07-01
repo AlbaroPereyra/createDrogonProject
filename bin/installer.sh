@@ -2,7 +2,13 @@
 # Variables
 user="$(whoami)";
 dir="$(dirname $0)";
+updater="${dir}/updater.sh";
+firstCrontabWidth=10;
+secondCrontabWidth=10;
+tmpCrontab="/var/tmp/crontab.tmp";
+
 chmod -R u+x "$dir";
+
 # -s returns 0 if found otherwise 1
 which -s brew;
 # $? exit status of previous command
@@ -103,3 +109,14 @@ mkdir build;
 cd build;
 cmake -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl -DOPENSSL_LIBRARIES=/usr/local/opt/openssl/lib -DCMAKE_BUILD_TYPE=Release ..;
 make && sudo make install;
+
+# add updater to cron
+# adding update to reboot because, in can be installed in a laptop.
+if [ -z "$(crontab -l 2>/dev/null | grep $updater)" ];
+then
+  crontab -l 2>/dev/null > $tmpCrontab;
+  printf "%-${firstCrontabWidth}s%-${secondCrontabWidth}s%s\n" \
+	 "@reboot" "/bin/sh" "$updater";
+  tee $tmpCrontab | crontab -;
+  rm $tmpCrontab;
+fi
