@@ -85,20 +85,19 @@ done
 IFS=$OLDIFS;
 
 optDir="/opt":
-# TODO 
-# test this, this might fail if the directory already exists
-if ! mkdir -p "$optDir" 2>/dev/null;
+if [ -e "$optDir" ];
 then
-  sudoCommands="$(
-tee <<EOF
-mkdir -p $optDir;
-chown -R $user /opt;
-EOF)"
-  if ! sudo -s eval "$sudoCommands" 2>/dev/null;
-     then
-     repoDir="${HOME}/${optDir}";
+  testDir="${optDir}/test";
+  touch "$testDir";
+  if [ -e "$optDir" ];
+  then
+    rm -r "$testDir";
+  else
+    sudo chown -R "$user" "${optDir}";
   fi
-  mkdir -p "$optDir";
+else
+  sudo mkdir "$optDir";
+  sudo chown -R "$user" "${optDir}";
 fi
 
 cd $optDir;
