@@ -116,7 +116,7 @@ if [ -z "$(crontab -l 2>/dev/null | grep $updater)" ];
 then
   crontab -l 2>/dev/null > $tmpCrontab;
   printf "%-${firstCrontabWidth}s%-${secondCrontabWidth}s%s\n" \
-	 "@reboot" "/bin/sh" "$updater";
+	 "@reboot" "/bin/sh" "$updater -c";
   tee $tmpCrontab | crontab -;
   rm $tmpCrontab;
 fi
