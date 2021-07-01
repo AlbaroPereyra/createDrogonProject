@@ -82,17 +82,13 @@ then
   printf "Enter softwareName(i.e rubbish, bestSoftware etc.): ";
   read softwareName;
 fi
-
-if ! touch "$optDir" 2>/dev/null;
-then
-  optDir="${HOME}/${optDir}";
-fi
+repoDir="${optDir}/${softwareName}";
 
 # Create repo on Github
 gitDir="${repoDir}/.git/";
 cd $optDir;
 gh repo create --confirm --enable-issues=true --enable-wiki=true --private="$private" --public="$public" "$softwareName";
-cd $gitDir;
+cd "$repoDir";
 drogon_ctl create project $softwareName;
 # This can probably be cleaner with find.
 cp -R "${softwareName}/" "${repoDir}";
