@@ -2,6 +2,7 @@
 
 projectName="createProject";
 projectDir="$(dirname $0)";
+# Since we are in bin we need to remove the last directory.
 projectDir=${projectDir%/*};
 
 while getopts :hc OPT; do
@@ -42,7 +43,7 @@ shift `expr $OPTIND - 1`
 OPTIND=1
 
 
-# This script is borrowed from on-my-zsh's upgrade script. Why reinvent the wheel.
+# This script is borrowed from oh-my-zsh's upgrade script. Why reinvent the wheel.
 
 # Use colors, but only if connected to a terminal, and that terminal
 # supports them.
@@ -84,7 +85,7 @@ then
   printf '%s\n' ' | \_____ |  |  | | |                '
   printf '%s\n' ' |______/ |_____/ |_|      Essentials'
   printf '%s\n' '                                     '
-  printf "${BLUE}%s\n" "Cowabunga Dude! The Alamo Server Wizard has been updated and/or is at the current version."
+  printf "${BLUE}%s\n" "Cowabunga Dude! The $projectName has been updated and/or is at the current version."
 else
   printf "${RED}%s${NORMAL}\n" 'There was an error updating. Try again later?'
 fi
