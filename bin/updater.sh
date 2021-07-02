@@ -41,11 +41,11 @@ EOF
       ./getNetworkStatus.sh
       ;;
     *)
-      echo "usage: `basename $0` [+-hc} [--] ARGS..."
+      printf "usage: %s [-hc]\n" "$(basename $0)";
       exit 2
   esac
 done
-shift `expr $OPTIND - 1`
+shift $(expr $OPTIND - 1)
 OPTIND=1
 
 
