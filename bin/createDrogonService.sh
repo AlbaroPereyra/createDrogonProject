@@ -5,6 +5,9 @@
 # if Freebsd then...
 printf "Under Development.\n";
 exit;
+# This script is to be used with FreeBSD.
+# You can learn more about FreeBSD here:
+# https://docs.freebsd.org/en/books/handbook/
 
 printf "Enter the domainname of the website (i.e. compcaly.com):";
 read domain_name;
