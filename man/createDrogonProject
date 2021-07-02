@@ -1,0 +1,32 @@
+.\" Manpage for createDrogonProject beta.
+.\" Contact 2AlbaroPereyra to report bugs.
+.TH man 1 "02 July 2021" "0.07" "createDrogonProject beta man page"
+.SH NAME
+newProject \- used to create a create a new Drogon project.
+.SH SYNOPSIS
+usage: createDrogonProject [-hp] [-n (cammelCase program name)]
+.SH DESCRIPTION
+Use createDrogonProject to create new Drogon projects and upload them on a github.
+You van learn more about Drogon here:
+https://drogon.docsforge.com/master/overview/
+.SH OPTIONS
+-h
+    To display usage.
+
+-n [(cammelCase name of software)]
+    Use this option to specifie the name of the software.   
+    
+-p
+    Use this option to make the repository private.
+.SH SEE ALSO
+emacs(1), zsh(1), mosh(1), builtin(1)
+.SH BUGS
+NOTE:
+This script has only been tested on Mac OS X.
+
+This software is in beta stage and it is subject to change and prone to errors.
+
+No known bugs.
+
+.SH AUTHOR
+Albaro Pereyra (2AlbaroPereyra@gmail.com)

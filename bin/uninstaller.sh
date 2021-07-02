@@ -6,6 +6,12 @@ updater="$dir/updater.sh";
 tmpCrontab="/var/tmp/crontab.tmp";
 projectDir=${dir%/*};
 projectName="createDrogonProject";
+#TODO get this value dinamicaly
+exeName="createDrogonProject";
+manDir="/usr/local/share/man/man1";
+manFileExtension=".1";
+manPage="$manDir/${exeName}${manFileExtension}";
+
 
 while getopts :h OPT; do
   case $OPT in
@@ -30,7 +36,7 @@ OPTIND=1;
 crontab -l 2>/dev/null | grep -v "$updater" > $tmpCrontab;
 cat "$tmpCrontab" | crontab -
 rm $tmpCrontab
-
+rm -rf "mapPage";
 # self destruct
-rm -rf $projectDir
+rm -rf "$projectDir";
 #TODO remove drogon

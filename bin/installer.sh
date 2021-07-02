@@ -2,10 +2,19 @@
 # Variables
 user="$(whoami)";
 dir="$(dirname $0)";
+script="$dir/$(basename $0)";
+#TODO get this value dinamicaly
+exeName="createDrogonProject";
 updater="${dir}/updater.sh";
 firstCrontabWidth=10;
 secondCrontabWidth=10;
 tmpCrontab="/var/tmp/crontab.tmp";
+
+localManDir=${dir%/*};
+manDir="/usr/local/share/man/man1";
+manFileExtension=".1";
+manPage="$manDir/${exeName}${manFileExtension}";
+
 
 chmod -R u+x "$dir";
 
@@ -99,7 +108,7 @@ else
   sudo mkdir "$optDir";
   sudo chown -R "$user" "${optDir}";
 fi
-
+ln -s "${localManDir}/${exetName}" "$manPage";
 cd $optDir;
 git clone https://github.com/an-tao/drogon;
 cd drogon;
