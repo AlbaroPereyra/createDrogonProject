@@ -14,8 +14,6 @@ optDir="/opt";
 
 # Disclaimer
 printf "WARNING:\n";
-printf "Do not use this script it is currently under development\n";
-exit 1;
 printf "This software is in beta, subject to change and prone to errors.\n";
 
 # Get arguments:
