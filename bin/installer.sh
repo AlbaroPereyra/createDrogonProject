@@ -3,14 +3,12 @@
 user="$(whoami)";
 dir="$(dirname $0)";
 script="$dir/$(basename $0)";
+projectDir=${dir%/*};
 #TODO get this value dinamicaly
 exeName="createDrogonProject";
-updater="${dir}/updater.sh";
 firstCrontabWidth=10;
 secondCrontabWidth=10;
 tmpCrontab="/var/tmp/crontab.tmp";
-
-localManDir=${dir%/*};
 manDir="/usr/local/share/man/man1";
 manFileExtension=".1";
 manPage="$manDir/${exeName}${manFileExtension}";
@@ -108,7 +106,7 @@ else
   sudo mkdir "$optDir";
   sudo chown -R "$user" "${optDir}";
 fi
-ln -s "${localManDir}/${exetName}" "$manPage";
+ln -s "${projectDir}/${exetName}" "$manPage";
 cd $optDir;
 git clone https://github.com/an-tao/drogon;
 cd drogon;
@@ -120,11 +118,12 @@ make && sudo make install;
 
 # add updater to cron
 # adding update to reboot because, in can be installed in a laptop.
+updater="${dir}/updater.sh -c -d ${projectDir}";
 if [ -z "$(crontab -l 2>/dev/null | grep $updater)" ];
 then
   crontab -l 2>/dev/null > $tmpCrontab;
   printf "%-${firstCrontabWidth}s%-${secondCrontabWidth}s%s\n" \
-	 "@reboot" "/bin/sh" "$updater -c";
+	 "@reboot" "/bin/sh" "$updater}";
   tee $tmpCrontab | crontab -;
   rm $tmpCrontab;
 fi

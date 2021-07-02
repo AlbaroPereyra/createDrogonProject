@@ -1,29 +1,35 @@
 #! /bin/sh -
 
-# Variables
-projectDir="$(dirname $0)";
-# Since we are in bin we need to remove the last directory.
-projectDir=${projectDir%/*};
-#TODO
-# Dynamically get project name
-projectName="createProject";
-#TODO
-# add drogon directory
-drogoDir="";
+installer="installer.sh";
 
-while getopts :hc OPT; do
+while getopts :cd:hs OPT; do
   case $OPT in
+    c|+c)
+      # Give computer time to boot.
+      sleep 60;
+      ./getNetworkStatus.sh
+      ;;
+    d|+d)
+      repoDir="$OPTARG";
+      ;;
     h|+h)
             cat <<EOF
 Use this script to update this software on reboot.
 It can be more modular, dynamic but it is what it 
 is for now.
 
--h
-    Display this usage.
 -c 
     Use this option to execute the sript from cron during reboot.
     We are using reboot because we are assuming we are on a laptop.
+
+-d
+    Use this option to specity the directory of the repository you 
+    would like to update.
+-h
+    Display this usage.
+
+-s 
+   Use this option to update a submodule.
 
 NOTE:
 This script has only been tested on Mac OS X.
@@ -35,11 +41,10 @@ EOF
       exit 0;
 
       ;;
-    c|+c)
-      # Give computer time to boot.
-      sleep 60;
-      ./getNetworkStatus.sh
+    s|+s)
+      gitCommand="git submodule pull --rebase --stat origin main";
       ;;
+
     *)
       printf "usage: %s [-hc]\n" "$(basename $0)";
       exit 2
@@ -48,6 +53,21 @@ done
 shift $(expr $OPTIND - 1)
 OPTIND=1
 
+if [ -z $repoDir ];
+then
+  printf "Enter the directory of the repo you are Trying to update.\n";
+  printf "(ex. /opt/rubbish,/opt/newProject): ";
+  read repoDir
+  
+fi
+projectName="${repoDir##*/}";
+projectNameAppend="$(tr '[:lower:]' '[:upper:]' <<< ${projectName:0:1})${projectName:1}"
+
+
+if [ -z "$gitCommand" ];
+then
+  gitCommand="git pull --rebase --stat origin main";
+fi
 
 # This script is borrowed from oh-my-zsh's upgrade script. Why reinvent the wheel.
 
@@ -77,20 +97,14 @@ else
 fi
 
 printf "${BLUE}%s${NORMAL}\n" "Updating $projectName.";
-cd "$projectDir";
+cd "$repoDir";
 
-#TODO 
-# update and install drogon submodule.
-
-if git pull --rebase --stat origin main;
+if eval "$gitCommand"
 then
+  chmod u+x "$installer";
+  ./"${installer}";
   printf '%s' "$GREEN"
-  printf '%s\n' '  ______  ______   ______            '
-  printf '%s\n' ' |  ____\ |     \ |  __  \           '
-  printf '%s\n' ' | /      |  |  | |  ____/           '
-  printf '%s\n' ' | \_____ |  |  | | |                '
-  printf '%s\n' ' |______/ |_____/ |_|      Essentials'
-  printf '%s\n' '                                     '
+  ./get${projectNameAppend}Text.sh
   printf "${BLUE}%s\n" "Cowabunga Dude! The $projectName has been updated and/or is at the current version."
 else
   printf "${RED}%s${NORMAL}\n" 'There was an error updating. Try again later?'
