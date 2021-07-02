@@ -58,14 +58,14 @@ do
   if [ -z "${isDepInstalled}" ];
   then
     # Used for dep prerequisites
-    case $dep in
-      mariadb)
+    case "X$dep" in
+      "Xmariadb")
 	brew unlink mysql
 	;;
     esac
     brew install $dep;
-    case $dep in
-      git)
+    case "X$dep" in
+      "Xgit")
         git config --global user.name "$(id -F)";
 	printf "Enter email account (ex. username@gmail.com): ";
 	read emailAddress;
@@ -78,10 +78,10 @@ do
 	# TODO 
 	# walk user through github ssh setup
 	;;
-      gh)
+      "Xgh")
 	gh auth login;
 	;;
-      zlib)
+      "Xzlib")
 	export LDFLAGS="-L/usr/local/opt/zlib/lib";
 	export CPPFLAGS="-I/usr/local/opt/zlib/include";
 	export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig";
@@ -96,7 +96,7 @@ if [ -e "$optDir" ];
 then
   testDir="${optDir}/test";
   touch "$testDir";
-  if [ -e "$optDir" ];
+  if [ -e "$testDir" ];
   then
     rm -r "$testDir";
   else

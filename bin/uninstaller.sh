@@ -14,8 +14,8 @@ manPage="$manDir/${exeName}${manFileExtension}";
 drogonDir="/opt/drogon";
 
 while getopts :h OPT; do
-  case $OPT in
-    h|+h)
+  case "X$OPT" in
+    "Xh"|"X+h")
         tee <<EOF
 Use this script to uninstall $projectName
 
@@ -25,7 +25,7 @@ EOF
   exit 0;
       ;;
     *)
-      printf "usage: $(basename $0) [+-h] [--] ARGS...\n";
+      printf "usage: $(basename $0) [-h]\n";
       exit 2;
   esac
 done
@@ -35,10 +35,10 @@ OPTIND=1;
 # remove updater from cron
 crontab -l 2>/dev/null | grep -v "$updater" > $tmpCrontab;
 cat "$tmpCrontab" | crontab -
-rm $tmpCrontab
+rm "$tmpCrontab";
 rm -rf "mapPage";
 #remove drogon
-rm -rf "$drogonDir"
+rm -rf "$drogonDir";
 # self destruct
 rm -rf "$projectDir";
 

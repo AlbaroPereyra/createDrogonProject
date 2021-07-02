@@ -104,7 +104,7 @@ then
   chmod u+x "$installer";
   ./"${installer}";
   printf '%s' "$GREEN"
-  ./get${projectNameAppend}Text.sh
+  ./get${projectNameAppend}UpdaterText.sh
   printf "${BLUE}%s\n" "Cowabunga Dude! The $projectName has been updated and/or is at the current version."
 else
   printf "${RED}%s${NORMAL}\n" 'There was an error updating. Try again later?'

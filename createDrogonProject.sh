@@ -27,8 +27,8 @@ printf "This software is in beta, subject to change and prone to errors.\n";
 # Note:
 # if the option has an argument add a ':' after the option.
 while getopts :hl:n:p OPT; do
-  case $OPT in
-    h|+h)
+  case "X$OPT" in
+    "Xh"|"X+h")
       cat <<EOF
 Use this script to create a new Drogon project.
 You can learn more about Drogon here:
@@ -51,11 +51,11 @@ This software is in beta stage and it is subject to change and prone to errors.
 EOF
       exit 0;
       ;;
-    n|+n)
+    "Xn"|"X+n")
       softwareName="$OPTARG";
       ;;
 
-    p|+p)
+    "Xp"|"X+p")
       private=true;
       public=false;
       ;;

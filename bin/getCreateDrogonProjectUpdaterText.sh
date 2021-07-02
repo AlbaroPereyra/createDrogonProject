@@ -12,4 +12,3 @@ printf '%s\n' ' | /      |  |  | |  ____/           '
 printf '%s\n' ' | \_____ |  |  | | |                '
 printf '%s\n' ' |______/ |_____/ |_|      Essentials'
 printf '%s\n' '                                     '
-./get${projectNameAppend}Text.sh
