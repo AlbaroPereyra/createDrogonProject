@@ -3,16 +3,16 @@
 installer="installer.sh";
 
 while getopts :cd:hs OPT; do
-  case $OPT in
-    c|+c)
+  case "X$OPT" in
+    "Xc"|"X+c")
       # Give computer time to boot.
       sleep 60;
       ./getNetworkStatus.sh
       ;;
-    d|+d)
+    "Xd"|"+d")
       repoDir="$OPTARG";
       ;;
-    h|+h)
+    "Xh"|"X+h")
             cat <<EOF
 Use this script to update this software on reboot.
 It can be more modular, dynamic but it is what it 
@@ -41,7 +41,7 @@ EOF
       exit 0;
 
       ;;
-    s|+s)
+    "Xs"|"X+s")
       gitCommand="git submodule pull --rebase --stat origin main";
       ;;
 
@@ -53,7 +53,7 @@ done
 shift $(expr $OPTIND - 1)
 OPTIND=1
 
-if [ -z $repoDir ];
+if [ -z "$repoDir" ];
 then
   printf "Enter the directory of the repo you are Trying to update.\n";
   printf "(ex. /opt/rubbish,/opt/newProject): ";
