@@ -1,9 +1,15 @@
 #! /bin/sh -
 
-projectName="createProject";
+# Variables
 projectDir="$(dirname $0)";
 # Since we are in bin we need to remove the last directory.
 projectDir=${projectDir%/*};
+#TODO
+# Dynamically get project name
+projectName="createProject";
+#TODO
+# add drogon directory
+drogoDir="";
 
 while getopts :hc OPT; do
   case $OPT in
