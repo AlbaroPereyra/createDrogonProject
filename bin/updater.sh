@@ -15,8 +15,6 @@ while getopts :cd:hs OPT; do
     "Xh"|"X+h")
             cat <<EOF
 Use this script to update this software on reboot.
-It can be more modular, dynamic but it is what it 
-is for now.
 
 -c 
     Use this option to execute the sript from cron during reboot.
