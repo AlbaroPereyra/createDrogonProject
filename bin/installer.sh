@@ -12,7 +12,7 @@ tmpCrontab="/var/tmp/crontab.tmp";
 manDir="/usr/local/share/man/man1";
 manFileExtension=".1";
 manPage="$manDir/${exeName}${manFileExtension}";
-
+userBin="/usr/local/bin/";
 
 chmod -R u+x "$dir";
 
@@ -106,7 +106,8 @@ else
   sudo mkdir "$optDir";
   sudo chown -R "$user" "${optDir}";
 fi
-ln -s "${projectDir}/${exetName}" "$manPage";
+ln -s "${script}" "${userBin}/${exeName}";
+ln -s "${projectDir}/name/${exetName}" "$manPage";
 cd $optDir;
 git clone https://github.com/an-tao/drogon;
 cd drogon;
