@@ -10,7 +10,7 @@ while getopts :cd:hs OPT; do
     "Xc"|"X+c")
       # Give computer time to boot.
       sleep 60;
-      ./getNetworkStatus.sh
+      sh getNetworkStatus.sh
       ;;
     "Xd"|"+d")
       repoDir="$OPTARG";
@@ -106,10 +106,10 @@ then
   then
     chmod u+x "${installerLocation}";
     cd "${binDir}";
-    ./"${installer}";
+    sh "${installer}";
   fi
   printf '%s' "$GREEN"
-  ./$(dirname $0)/get${projectNameAppend}UpdaterText.sh
+  sh $(dirname $0)/get${projectNameAppend}UpdaterText.sh
   printf "${BLUE}%s\n" "Cowabunga Dude! The $projectName has been updated and/or is at the current version."
 else
   printf "${RED}%s${NORMAL}\n" 'There was an error updating. Try again later?'

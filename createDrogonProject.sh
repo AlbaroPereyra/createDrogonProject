@@ -71,7 +71,7 @@ if [ $? != 0 ];
 then
   # Install Drogon
   chmod u+x ${binDir}/${installer};
-  ./${binDir}/${installer}
+  sh ${binDir}/${installer}
 fi
 
 
