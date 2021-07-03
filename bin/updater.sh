@@ -109,7 +109,7 @@ then
     ./"${installer}";
   fi
   printf '%s' "$GREEN"
-  ./$(basename $0)/get${projectNameAppend}UpdaterText.sh
+  ./$(dirname $0)/get${projectNameAppend}UpdaterText.sh
   printf "${BLUE}%s\n" "Cowabunga Dude! The $projectName has been updated and/or is at the current version."
 else
   printf "${RED}%s${NORMAL}\n" 'There was an error updating. Try again later?'
