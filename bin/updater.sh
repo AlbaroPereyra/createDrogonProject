@@ -47,7 +47,7 @@ EOF
       ;;
 
     *)
-      printf "usage: %s [-hc]\n" "$(basename $0)";
+      printf "usage: %s [-chs] [-d /opt/projectDirectory ]\n" "$(basename $0)";
       exit 2
   esac
 done
