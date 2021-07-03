@@ -1,6 +1,9 @@
 #! /bin/sh -
 
+# Variables
+binDir="bin";
 installer="installer.sh";
+installerLocation="${binDir}/${installer}";
 
 while getopts :cd:hs OPT; do
   case "X$OPT" in
@@ -14,7 +17,7 @@ while getopts :cd:hs OPT; do
       ;;
     "Xh"|"X+h")
             cat <<EOF
-Use this script to update this software on reboot.
+Use this script to update software on reboot.
 
 -c 
     Use this option to execute the sript from cron during reboot.
@@ -27,7 +30,7 @@ Use this script to update this software on reboot.
     Display this usage.
 
 -s 
-   Use this option to update a submodule.
+    Use this option to update a submodule.
 
 NOTE:
 This script has only been tested on Mac OS X.
@@ -99,10 +102,14 @@ cd "$repoDir";
 
 if eval "$gitCommand"
 then
-  chmod u+x "$installer";
-  ./"${installer}";
+  if [ -e "${installerLocation}" ];
+  then
+    chmod u+x "${installerLocation}";
+    cd "${binDir}";
+    ./"${installer}";
+  fi
   printf '%s' "$GREEN"
-  ./get${projectNameAppend}UpdaterText.sh
+  ./$(basename $0)/get${projectNameAppend}UpdaterText.sh
   printf "${BLUE}%s\n" "Cowabunga Dude! The $projectName has been updated and/or is at the current version."
 else
   printf "${RED}%s${NORMAL}\n" 'There was an error updating. Try again later?'
